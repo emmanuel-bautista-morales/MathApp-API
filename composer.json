@@ -1,0 +1,19 @@
+{
+    "name": "emmanuel/api",
+    "require": {
+        "phroute/phroute": "^2.1",
+        "firebase/php-jwt": "^5.2"
+    },
+    "authors": [
+        {
+            "name": "emmanuel-bautista-morales",
+            "email": "emmanuel_bautista_morales@outlook.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Models\\": "app/models/",
+            "Controllers\\": "app/controllers/" 
+        }
+    }
+}
