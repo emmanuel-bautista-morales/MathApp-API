@@ -4,11 +4,13 @@
     use Phroute\Phroute\Exception\HttpRouteNotFoundException;
     use Phroute\Phroute\Exception\HttpMethodNotAllowedException;
     use Controllers\HomeController;
+    use Controllers\UserController;
 
     $collector = new RouteCollector();
 
     // rutas
     $collector->get('/', fn() => HomeController::index() );
+    $collector->post('/api/user/create', fn() => UserController::create(file_get_contents("php://input", true)));
 
     $dispatcher = new Dispatcher($collector->getData());
     

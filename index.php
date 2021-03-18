@@ -3,8 +3,8 @@
     
     use Database\DB;
 
-    
+    DB::connect();
 
     require 'routes/routes.php';
-    DB::connect();
+    
 ?>
