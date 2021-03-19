@@ -5,15 +5,26 @@
     use Phroute\Phroute\Exception\HttpMethodNotAllowedException;
     use Controllers\HomeController;
     use Controllers\UserController;
+    use Controllers\LessonController;
+    use Controllers\ExperimentController;
 
-    $collector = new RouteCollector();
+
+$collector = new RouteCollector();
 
     // rutas
     $collector->get('/', fn() => HomeController::index() );
     $collector->post('/api/user/create', fn() => UserController::create(file_get_contents("php://input", true)));
-
+    //api para el controller lessons
+    $collector->get('/api/lesson/all', fn() => LessonController::all());
+    $collector->post('/api/lesson/create', fn() => LessonController::create(file_get_contents("php://input", true)));
+    $collector->get("/api/lesson/show/{id}",fn($id)=>LessonController::show($id));
+    $collector->delete('/api/lesson/delete/{id}', fn($id)=>LessonController::delete($id));
+    //api para el cotroller experiment
+    $collector->get("/api/experiment/all", fn() => ExperimentController::all());
+    $collector->post('/api/experiment/create', fn() => ExperimentController::create(file_get_contents("php://input", true)));
+    $collector->get("/api/experiment/show/{id}",fn($id)=>ExperimentController::show($id));
+    $collector->delete('/api/experiment/delete/{id}', fn($id)=>ExperimentController::delete($id));
     $dispatcher = new Dispatcher($collector->getData());
-    
     try {
         echo $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
     } catch (HttpRouteNotFoundException $e) {

@@ -5,6 +5,7 @@
     class UserController {
 
         public static function create($request) {
+            
             $data = [];
             parse_str($request, $data);
             print_r($data);
