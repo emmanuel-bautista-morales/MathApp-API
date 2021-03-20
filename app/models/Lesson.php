@@ -19,10 +19,9 @@ class Lesson {
                 $lessons[$i]=$row;
                 $i++;
             }
-            header("Content-type: application/json; charset= utf8");
-            echo json_encode($lessons);
+            return $lessons;
         }else{
-            echo json_encode(['message'=>'No hay datos']);
+            return [];
         }
         
     }
@@ -33,19 +32,16 @@ class Lesson {
             // almacenar instancia de base de datos
             $db = DB::get_database();
             // preparar consulta
-            $stmt = $db->prepare("INSERT INTO lessons (title, content, id_signature) VALUES (:title, :content, :id_signature)");
+            $stmt = $db->prepare("INSERT INTO lessons (title, content, id_course) VALUES (:title, :content, :id_course)");
             
-            if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':id_signature' => $attributes['id_signature']))) {
-                $msg['message'] = 'Almacenado correctamente';
+            if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':id_course' => $attributes['id_course']))) {
+                    return true;
                 } else {
-                 $msg['message'] = 'No se almacenaron los datos';
+                    return false;
                 }
-          
         } else {
-            $msg['message'] = 'Verifique que haya ingresado todos los datos';
+            return false;
         }
-        header("Content-type: application/json; charset= utf8");
-        echo  json_encode($msg);  
     }
 
     public static function show($id){
@@ -56,18 +52,16 @@ class Lesson {
        $stmt=$db->prepare("select * from lessons where id= :id");
        $stmt->execute(['id'=>$id]);
        if($stmt->rowCount() > 0){
-        $lessons = array();//array para almacenar los datos
-        
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            $lessons[0]=$row; 
-        }
-        header("Content-type: application/json; charset= utf8");
-        echo json_encode($lessons);
+            $lessons = array();//array para almacenar los datos
+            
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $lessons[0]=$row; 
+            }
+
+            return $lessons[0];
 
         }else{
-        header("Content-type: application/json; charset= utf8");
-        echo json_encode(['message'=>'No se encotró ese registro']);
-       
+            return null;
         }
  
     }
@@ -82,12 +76,10 @@ class Lesson {
         $stmt->execute(['id'=>$id]);
         //verificamos que se haya eliminado un registro
         if($stmt->rowCount() >0 ){
-            $msg['message'] = 'eliminado';
+            return true;
         }else{
-            $msg['message'] = 'no eliminado';
+            return false;
         }
-        header("Content-type: application/json; charset= utf8");
-        echo  json_encode($msg);  
     }
 }
 

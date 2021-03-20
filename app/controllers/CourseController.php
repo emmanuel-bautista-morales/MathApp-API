@@ -1,75 +1,73 @@
 <?php
     namespace Controllers;
-    Use Models\Lesson;
 
-    class LessonController {
+    use Models\Course;
 
-        public static function all(){
-            $lessons = Lesson::all();  
+    class CourseController {
+
+        public static function all() {
+            $courses = Course::all();
 
             return json_encode([
                 'status' => 'ok',
-                'data' => $lessons
+                'data' => $courses
             ]);
         }
 
         public static function create($request) {
             $data = [];
             parse_str($request, $data);
-            $title = $data['title'];
-            $content = $data['content'];
-            $id_signature = $data['id_course'];
+            $name = $data['name'];
 
-           $value = Lesson::create([
-                'title' => $title,
-                'content' => $content,
-                'id_course' => $id_signature
+            $value = Course::create([
+                'name' => $name
             ]);
 
             if ($value) {
                 return json_encode([
                     'status' => 'ok',
-                    'message' => 'Lección creada correctamente'
+                    'message' => 'Curso creado correctamente'
                 ]);
             } else {
                 return json_encode([
                     'status' => 'error',
-                    'message' => 'Hubo un error al crear la lección'
+                    'message' => 'Ocurrió un error al crear el curso'
                 ]);
             }
-            
         }
-        public static function show($id){
-            $lesson = Lesson::show($id);
 
-            if ($lesson) {
+        public static function show($id){
+            $experiment = Course::show($id);
+    
+            if ($experiment) {
                 return json_encode([
                     'status' => 'ok',
-                    'data' => $lesson
+                    'data' => $experiment
                 ]);
             } else {
                 return json_encode([
                     'status' => 'error',
-                    'message' => 'No se encontraron lecciones'
+                    'message' => 'No se encontró ningún curse con ese id'
                 ]);
             }
-
         }
-        
-        public static function delete($id){
-            $value = Lesson::delete($id);
 
+        public static function delete($id){
+            $value = Course::delete($id);
+    
             if ($value) {
                 return json_encode([
                     'status' => 'ok',
-                    'message' => 'Lección eliminada'
+                    'message' => 'Curso eliminado'
                 ]);
             } else {
                 return json_encode([
                     'status' => 'error',
-                    'message' => 'Ocurrió un error al eliminar la lección'
+                    'message' => 'Ocurrió un error al eliminar el curso'
                 ]);
             }
         }
+
+        
     }
 ?>

@@ -6,23 +6,22 @@ class Experiment{
 
   public static function all(){
    //instancia de la base de datos
-   $db=DB::get_database();
-   $stmt=$db->prepare("select * from experiment");
-   $stmt->execute();
+    $db=DB::get_database();
+    $stmt=$db->prepare("select * from experiment");
+    $stmt->execute();
 
-   if($stmt->rowCount()){
-       $experiments=array();
-       $i=0;
+    if($stmt->rowCount()){
+        $experiments=array();
+        $i=0;
 
-       while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-          $experiments[$i]=$row;
-          $i++;
-       }
-       header("Content-type: application/json; charset= utf8");
-       echo json_encode($experiments);
-   }else{
-        echo json_encode(['message'=>'No hay datos']);
-   }
+        while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+            $experiments[$i]=$row;
+            $i++;
+        }
+        return $experiments;
+    }else{
+          return [];
+    }
 
   }
 
@@ -35,20 +34,16 @@ class Experiment{
       // preparar consulta
       $stmt = $db->prepare("INSERT INTO experiment (title,content,id_lesson) VALUES (:title, :content, :id_lesson)");
       
-      if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':id_lesson' => $attributes['id_lesson']))) {
-           
-           $msg['message'] = 'Almacenado correctamente';
+          if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':id_lesson' => $attributes['id_lesson']))) {
+            return true;
           } else {
-          
-           $msg['message'] = 'No se almacenaron los datos';
+            return false;
           }
-   } else {
-     
-      $msg['message'] = 'Verifique que haya ingresado todos los datos';
-   }
-    header("Content-type: application/json; charset= utf8");
-    echo  json_encode($msg);  
-}
+      } else {
+        return false;
+      }
+  }
+  
   public static function show($id){
     // almacenar instancia de base de datos
     $db = DB::get_database(); 
@@ -57,39 +52,32 @@ class Experiment{
     $stmt=$db->prepare("select * from experiment where id= :id");
     $stmt->execute(['id'=>$id]);
     if($stmt->rowCount() > 0){
-    $lessons = array();//array para almacenar los datos
-    
-    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-        $lessons[0]=$row; 
-    }
-    header("Content-type: application/json; charset= utf8");
-    echo json_encode($lessons);
+      $experiments = array();//array para almacenar los datos
+      
+      while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        $experiments[0]=$row; 
+      }
 
-    }else{
-    header("Content-type: application/json; charset= utf8");
-    echo json_encode(['message'=>'No se encotró ese registro']);
-    
+      return $experiments[0];
+    } else{
+      return null;
     }
-
   }
 
   public static function delete($id){
-    // almacenar instancia de base de datos
-    $db = DB::get_database();
-    $msg['message'] = '';
+      // almacenar instancia de base de datos
+      $db = DB::get_database();
+      $msg['message'] = '';
 
-    //preparar consulta
-    $stmt = $db->prepare("delete from experiment where id = :id");
-    $stmt->execute(['id'=>$id]);
-    //verificamos que se haya eliminado un registro
-    if($stmt->rowCount() >0 ){
-        $msg['message'] = 'eliminado';
-    }else{
-        $msg['message'] = 'no eliminado';
-    }
-    header("Content-type: application/json; charset= utf8");
-    echo  json_encode($msg);  
-}
+      //preparar consulta
+      $stmt = $db->prepare("delete from experiment where id = :id");
+      $stmt->execute(['id'=>$id]);
+      //verificamos que se haya eliminado un registro
+      if($stmt->rowCount() >0 ){
+          return true;
+      }else{
+          return false;
+      }
+  }
 
 }
-?>
