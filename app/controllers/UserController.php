@@ -8,7 +8,7 @@
             
             $data = [];
             parse_str($request, $data);
-            print_r($data);
+            // print_r($data);
             
             $username = $data['username'];
             $email = $data['email'];
@@ -19,7 +19,15 @@
                 'email' => $email,
                 'pwd' => $pwd
             ])) {
-                return 'ok';
+                return json_encode([
+                    'status' => 'ok',
+                    'message' => 'Usuario creado'
+                ]);
+            } else {
+                return json_encode([
+                    'status' => 'error',
+                    'message' => 'Ocurrió un error al crear un usuario'
+                ]);
             }
             
             return "Error";

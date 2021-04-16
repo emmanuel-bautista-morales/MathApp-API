@@ -27,14 +27,13 @@ class Lesson {
     }
     
     public static function create($attributes = []) {
-        $msg['message'] = '';
         if (sizeof($attributes) > 0) {
             // almacenar instancia de base de datos
             $db = DB::get_database();
             // preparar consulta
-            $stmt = $db->prepare("INSERT INTO lessons (title, content, id_course) VALUES (:title, :content, :id_course)");
+            $stmt = $db->prepare("INSERT INTO lessons (title, content, course_id) VALUES (:title, :content, :course_id)");
             
-            if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':id_course' => $attributes['id_course']))) {
+            if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':course_id' => $attributes['course_id']))) {
                     return true;
                 } else {
                     return false;

@@ -18,12 +18,12 @@
             parse_str($request, $data);
             $title = $data['title'];
             $content = $data['content'];
-            $id_signature = $data['id_course'];
+            $id_signature = $data['course_id'];
 
            $value = Lesson::create([
                 'title' => $title,
                 'content' => $content,
-                'id_course' => $id_signature
+                'course_id' => $id_signature
             ]);
 
             if ($value) {

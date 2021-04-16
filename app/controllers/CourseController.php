@@ -47,7 +47,7 @@
             } else {
                 return json_encode([
                     'status' => 'error',
-                    'message' => 'No se encontró ningún curse con ese id'
+                    'message' => 'No se encontró ningún curso con ese id'
                 ]);
             }
         }
@@ -64,6 +64,22 @@
                 return json_encode([
                     'status' => 'error',
                     'message' => 'Ocurrió un error al eliminar el curso'
+                ]);
+            }
+        }
+
+        public static function get_lessons($course_id) {
+            $lessons = Course::get_lessons($course_id);
+
+            if ($lessons) {
+                return json_encode([
+                    'status' => 'ok',
+                    'data' => $lessons
+                ]);
+            } else {
+                return json_encode([
+                    'status' => 'error',
+                    'message' => 'No se econtraron lecciones para ese curso'
                 ]);
             }
         }

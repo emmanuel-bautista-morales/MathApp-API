@@ -78,6 +78,25 @@
                 return false;
             }
         }
+
+        public static function get_lessons($course_id) {
+            $db = DB::get_database();
+            $stmt = $db->prepare("select * from lessons where course_id= :course_id");
+            $stmt->execute([':course_id' => $course_id]);
+
+            if ($stmt->rowCount() > 0) {
+                $lessons = array();//array para almacenar los datos
+                $i = 0;
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    $lessons[$i]=$row;
+                    $i++; 
+                }
+    
+                return $lessons;
+            } else {
+                return null;
+            }
+        }
      
 
     }

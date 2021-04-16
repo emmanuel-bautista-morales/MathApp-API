@@ -22,6 +22,7 @@
     $collector->post('/api/course/create', fn() => CourseController::create(file_get_contents("php://input", true)));
     $collector->get("/api/course/show/{id}",fn($id)=>CourseController::show($id));
     $collector->delete('/api/course/delete/{id}', fn($id)=>CourseController::delete($id));
+    $collector->get('/api/course/{id}/lessons', fn($id)=>CourseController::get_lessons($id));
     // lessons
     $collector->get('/api/lesson/all', fn() => LessonController::all());
     $collector->post('/api/lesson/create', fn() => LessonController::create(file_get_contents("php://input", true)));
