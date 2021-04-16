@@ -7,7 +7,7 @@ class Experiment{
   public static function all(){
    //instancia de la base de datos
     $db=DB::get_database();
-    $stmt=$db->prepare("select * from experiment");
+    $stmt=$db->prepare("select * from experiments");
     $stmt->execute();
 
     if($stmt->rowCount()){
@@ -32,9 +32,9 @@ class Experiment{
       // almacenar instancia de base de datos
       $db = DB::get_database();
       // preparar consulta
-      $stmt = $db->prepare("INSERT INTO experiment (title,content,id_lesson) VALUES (:title, :content, :id_lesson)");
+      $stmt = $db->prepare("INSERT INTO experiments (title,content,lesson_id) VALUES (:title, :content, :lesson_id)");
       
-          if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':id_lesson' => $attributes['id_lesson']))) {
+          if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':lesson_id' => $attributes['lesson_id']))) {
             return true;
           } else {
             return false;

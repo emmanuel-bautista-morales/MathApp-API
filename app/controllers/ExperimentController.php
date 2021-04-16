@@ -18,11 +18,11 @@ class ExperimentController{
         parse_str($request, $data);
         $title = $data['title'];
         $content = $data['content'];
-        $id_lesson = $data['id_lesson'];
+        $lesson_id = $data['lesson_id'];
         $value =  Experiment::create([
             'title' => $title,
             'content' => $content,
-            'id_lesson' => $id_lesson
+            'lesson_id' => $lesson_id
         ]);
 
         if ($value) {
