@@ -1,6 +1,7 @@
 <?php 
 namespace Controllers;
 
+use Lib\Validator;
 use Models\Experiment;
 
 class ExperimentController{
@@ -19,22 +20,38 @@ class ExperimentController{
         $title = $data['title'];
         $content = $data['content'];
         $lesson_id = $data['lesson_id'];
-        $value =  Experiment::create([
-            'title' => $title,
-            'content' => $content,
-            'lesson_id' => $lesson_id
+
+        $validator = new Validator();
+
+        $validator->validate($data, [
+            'title' => ['required'],
+            'content' => ['required'],
+            'lesson_id' => ['required']
         ]);
 
-        if ($value) {
-            return json_encode([
-                'status' => 'ok',
-                'message' => 'Experimento creado'
-            ]);
-        } else {
+        if ($validator->error()) {
             return json_encode([
                 'status' => 'error',
-                'message' => 'Ocurrió un error al crear el experimento'
+                'errors' => $validator->error()
             ]);
+        } else {
+            $value =  Experiment::create([
+                'title' => $title,
+                'content' => $content,
+                'lesson_id' => $lesson_id
+            ]);
+    
+            if ($value) {
+                return json_encode([
+                    'status' => 'ok',
+                    'message' => 'Experimento creado'
+                ]);
+            } else {
+                return json_encode([
+                    'status' => 'error',
+                    'message' => 'Ocurrió un error al crear el experimento'
+                ]);
+            }
         }
     }
 
