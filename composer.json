@@ -14,7 +14,8 @@
         "psr-4": {
             "Models\\": "app/models/",
             "Controllers\\": "app/controllers/",
-            "Database\\": "database/"
+            "Database\\": "database/",
+            "Lib\\": "app/lib/"
         }
     }
 }

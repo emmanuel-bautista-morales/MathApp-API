@@ -1,7 +1,8 @@
 <?php
     namespace Controllers;
 
-    use Models\Course;
+use Lib\Validator;
+use Models\Course;
 
     class CourseController {
 
@@ -19,21 +20,35 @@
             parse_str($request, $data);
             $name = $data['name'];
 
-            $value = Course::create([
-                'name' => $name
+            $validator = new Validator();
+
+            $validator->validate($data, [
+                'name' => ['required']
             ]);
 
-            if ($value) {
-                return json_encode([
-                    'status' => 'ok',
-                    'message' => 'Curso creado correctamente'
-                ]);
-            } else {
+            if ($validator->error()) {
                 return json_encode([
                     'status' => 'error',
-                    'message' => 'Ocurrió un error al crear el curso'
+                    'errors' => $validator->error()
                 ]);
+            } else {
+                $value = Course::create([
+                    'name' => $name
+                ]);
+    
+                if ($value) {
+                    return json_encode([
+                        'status' => 'ok',
+                        'message' => 'Curso creado correctamente'
+                    ]);
+                } else {
+                    return json_encode([
+                        'status' => 'error',
+                        'message' => 'Ocurrió un error al crear el curso'
+                    ]);
+                }
             }
+            
         }
 
         public static function show($id){
