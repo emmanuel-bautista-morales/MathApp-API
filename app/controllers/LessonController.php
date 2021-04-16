@@ -27,7 +27,8 @@
             $validator->validate($data, [
                 'title' => ['required'],
                 'content' => ['required'],
-                'course_id' => ['required']
+                'course_id' => ['required'],
+                'course_id' => ['numeric']
             ]);
 
             if ($validator->error()) {
@@ -55,7 +56,7 @@
                 }
             }          
         }
-        
+
         public static function show($id){
             $lesson = Lesson::show($id);
 

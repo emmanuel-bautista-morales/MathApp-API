@@ -26,7 +26,8 @@ class ExperimentController{
         $validator->validate($data, [
             'title' => ['required'],
             'content' => ['required'],
-            'lesson_id' => ['required']
+            'lesson_id' => ['required'],
+            'lesson_id' => ['numeric']
         ]);
 
         if ($validator->error()) {
