@@ -49,7 +49,7 @@ class Experiment{
     $db = DB::get_database(); 
     
     // preparar consulta
-    $stmt=$db->prepare("select * from experiment where id= :id");
+    $stmt=$db->prepare("select * from experiments where lesson_id= :id");
     $stmt->execute(['id'=>$id]);
     if($stmt->rowCount() > 0){
       $experiments = array();//array para almacenar los datos

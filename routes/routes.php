@@ -24,7 +24,7 @@
     $collector->delete('/api/course/delete/{id}', fn($id)=>CourseController::delete($id));
     $collector->get('/api/course/{id}/lessons', fn($id)=>CourseController::get_lessons($id));
     // lessons
-    $collector->get('/api/lesson/all', fn() => LessonController::all());
+    $collector->get('/api/lesson/all/{id}', fn($id) => LessonController::all($id));
     $collector->post('/api/lesson/create', fn() => LessonController::create(file_get_contents("php://input", true)));
     $collector->get("/api/lesson/show/{id}",fn($id)=>LessonController::show($id));
     $collector->delete('/api/lesson/delete/{id}', fn($id)=>LessonController::delete($id));
