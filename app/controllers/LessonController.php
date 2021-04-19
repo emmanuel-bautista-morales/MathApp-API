@@ -1,5 +1,7 @@
 <?php
     namespace Controllers;
+
+    use Lib\Validator;
     Use Models\Lesson;
 
     class LessonController {
@@ -20,25 +22,41 @@
             $content = $data['content'];
             $id_signature = $data['course_id'];
 
-           $value = Lesson::create([
-                'title' => $title,
-                'content' => $content,
-                'course_id' => $id_signature
+            $validator = new Validator();
+
+            $validator->validate($data, [
+                'title' => ['required'],
+                'content' => ['required'],
+                'course_id' => ['required'],
+                'course_id' => ['numeric']
             ]);
 
-            if ($value) {
-                return json_encode([
-                    'status' => 'ok',
-                    'message' => 'Lección creada correctamente'
-                ]);
-            } else {
+            if ($validator->error()) {
                 return json_encode([
                     'status' => 'error',
-                    'message' => 'Hubo un error al crear la lección'
+                    'errors' => $validator->error()
                 ]);
-            }
-            
+            } else {
+                $value = Lesson::create([
+                    'title' => $title,
+                    'content' => $content,
+                    'course_id' => $id_signature
+                ]);
+    
+                if ($value) {
+                    return json_encode([
+                        'status' => 'ok',
+                        'message' => 'Lección creada correctamente'
+                    ]);
+                } else {
+                    return json_encode([
+                        'status' => 'error',
+                        'message' => 'Hubo un error al crear la lección'
+                    ]);
+                }
+            }          
         }
+
         public static function show($id){
             $lesson = Lesson::show($id);
 
