@@ -31,9 +31,9 @@ class Lesson {
             // almacenar instancia de base de datos
             $db = DB::get_database();
             // preparar consulta
-            $stmt = $db->prepare("INSERT INTO lessons (title, content, course_id) VALUES (:title, :content, :course_id)");
+            $stmt = $db->prepare("INSERT INTO lessons (title, content, lesson_id) VALUES (:title, :content, :lesson_id)");
             
-            if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':course_id' => $attributes['course_id']))) {
+            if ($stmt->execute(array(':title' => $attributes['title'], ':content' => $attributes['content'], ':lesson_id' => $attributes['lesson_id']))) {
                     return true;
                 } else {
                     return false;
@@ -80,6 +80,8 @@ class Lesson {
             return false;
         }
     }
+
+    
 }
 
 ?>

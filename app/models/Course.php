@@ -10,6 +10,7 @@
            //preparar la consulta
            $stmt = $db->prepare("select * from courses");
            $stmt->execute();
+           $courses_list = array();
            //verificamos que existan registros
            if($stmt->rowCount() > 0){
                $courses = array();//array para almacenar los datos
@@ -18,7 +19,22 @@
                    $courses[$i]=$row;
                    $i++;
                }
-               return $courses;
+
+               foreach ($courses as $course) {
+                    $course['lessons'] = self::get_lessons($course['id']);
+                    $lessons = $course['lessons'];
+                    $lessons_aux = [];
+
+                    foreach ($lessons as $lesson) {
+                        $lesson['experiments'] = self::get_lesson_experiments($lesson['id']);
+                        array_push($lessons_aux, $lesson);
+                    }
+
+                    $course['lessons'] = $lessons_aux;
+
+                    array_push($courses_list, $course);
+               }
+               return $courses_list;
            }else{
                return [];
            }
@@ -95,6 +111,25 @@
                 return $lessons;
             } else {
                 return null;
+            }
+        }
+
+        private static function get_lesson_experiments($lesson_id) {
+            $db = DB::get_database();
+            $stmt = $db->prepare("select * from experiments where lesson_id= :lesson_id");
+            $stmt->execute([':lesson_id' => $lesson_id]);
+    
+            if ($stmt->rowCount() > 0) {
+                $lessons = array();//array para almacenar los datos
+                $i = 0;
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    $lessons[$i]=$row;
+                    $i++; 
+                }
+    
+                return $lessons;
+            } else {
+                return [];
             }
         }
     }   
