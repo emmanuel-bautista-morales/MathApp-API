@@ -21,16 +21,38 @@
                }
 
                foreach ($courses as $course) {
-                    $course['lessons'] = self::get_lessons($course['id']);
-                    $lessons = $course['lessons'];
-                    $lessons_aux = [];
+                   // obtiene las lecciones del curso
+                    $course['lessons'] = self::select_all_where('lessons', 'course_id', $course['id']);
+                    // obtiene los tests del curso
+                    $course['tests'] = self::select_all_where('tests', 'course_id', $course['id']);
+                    $lessons = [];
+                    $test_list = [];
+                    $questions = [];
 
-                    foreach ($lessons as $lesson) {
-                        $lesson['experiments'] = self::get_lesson_experiments($lesson['id']);
-                        array_push($lessons_aux, $lesson);
+                    // obtiene los experimentos de cada lección
+                    foreach ($course['lessons'] as $lesson) {
+                        $lesson['experiments'] = self::select_all_where('experiments', 'lesson_id',$lesson['id']);
+                        array_push($lessons, $lesson);
                     }
 
-                    $course['lessons'] = $lessons_aux;
+                    // obtiene las preguntas dee cada test
+                    foreach ($course['tests'] as $test) {
+                        $test['questions'] = self::select_all_where('questions', 'test_id', $test['id']);
+                        array_push($test_list, $test);
+                    }
+
+                    $test_list = $test_list[0];
+
+                    foreach ($test_list['questions'] as $question) {
+                        
+                        $question['answers'] = self::get_answers($question['id']);
+                        array_push($questions, $question);
+                    }
+
+                    $test_list['questions'] = $questions;
+                    $course['lessons'] = $lessons;
+                    $course['tests'] = $test_list;
+                    
 
                     array_push($courses_list, $course);
                }
@@ -95,39 +117,37 @@
             }
         }
 
-        public static function get_lessons($course_id) {
+        private static function select_all_where($table, $field_name, $value) {
             $db = DB::get_database();
-            $stmt = $db->prepare("select * from lessons where course_id= :course_id");
-            $stmt->execute([':course_id' => $course_id]);
-
+            $stmt = $db->prepare("select * from $table where $field_name= :$field_name");
+            $stmt->execute([":$field_name" => $value]);
+    
             if ($stmt->rowCount() > 0) {
-                $lessons = array();//array para almacenar los datos
+                $array = [];//array para almacenar los datos
                 $i = 0;
                 while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                    $lessons[$i]=$row;
+                    $array[$i]=$row;
                     $i++; 
                 }
-    
-                return $lessons;
+                return $array;
             } else {
-                return null;
+                return [];
             }
         }
 
-        private static function get_lesson_experiments($lesson_id) {
+        private static function get_answers($question_id) {
             $db = DB::get_database();
-            $stmt = $db->prepare("select * from experiments where lesson_id= :lesson_id");
-            $stmt->execute([':lesson_id' => $lesson_id]);
+            $stmt = $db->prepare("select answers.id, answers.answer, correct from questions_answers inner join answers on answers.id = answer_id where question_id = :question_id");
+            $stmt->execute([":question_id" => $question_id]);
     
             if ($stmt->rowCount() > 0) {
-                $lessons = array();//array para almacenar los datos
+                $array = [];//array para almacenar los datos
                 $i = 0;
                 while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                    $lessons[$i]=$row;
+                    $array[$i]=$row;
                     $i++; 
                 }
-    
-                return $lessons;
+                return $array;
             } else {
                 return [];
             }
