@@ -8,6 +8,7 @@
     use Controllers\UserController;
     use Controllers\LessonController;
     use Controllers\ExperimentController;
+    use Controllers\ProgressController;
 
 
     $collector = new RouteCollector();
@@ -17,6 +18,8 @@
     // users
     $collector->get('/', fn() => HomeController::index() );
     $collector->post('/api/user/create', fn() => UserController::create(file_get_contents("php://input", true)));
+    
+    
     // courses
     $collector->get('/api/course/all', fn() => CourseController::all());
     $collector->post('/api/course/create', fn() => CourseController::create(file_get_contents("php://input", true)));
@@ -33,6 +36,11 @@
     $collector->post('/api/experiment/create', fn() => ExperimentController::create(file_get_contents("php://input", true)));
     $collector->get("/api/experiment/show/{id}",fn($id)=>ExperimentController::show($id));
     $collector->delete('/api/experiment/delete/{id}', fn($id)=>ExperimentController::delete($id));
+
+
+    //progress
+    $collector->post('/api/progress/create', fn() => ProgressController::create(file_get_contents("php://input", true)));
+
     $dispatcher = new Dispatcher($collector->getData());
     try {
         echo $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
