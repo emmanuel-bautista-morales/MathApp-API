@@ -38,18 +38,16 @@
                     // obtiene las preguntas dee cada test
                     foreach ($course['tests'] as $test) {
                         $test['questions'] = self::select_all_where('questions', 'test_id', $test['id']);
+
+                        foreach ($test['questions'] as $question) {
+                            $question['answers'] = self::get_answers($question['id']);
+                            array_push($questions, $question);
+                        }
+                        
+                        $test['questions'] = $questions;
                         array_push($test_list, $test);
                     }
-
-                    $test_list = $test_list[0];
-
-                    foreach ($test_list['questions'] as $question) {
-                        
-                        $question['answers'] = self::get_answers($question['id']);
-                        array_push($questions, $question);
-                    }
-
-                    $test_list['questions'] = $questions;
+                    
                     $course['lessons'] = $lessons;
                     $course['tests'] = $test_list;
                     
@@ -57,6 +55,7 @@
                     array_push($courses_list, $course);
                }
                return $courses_list;
+            // return [];
            }else{
                return [];
            }
