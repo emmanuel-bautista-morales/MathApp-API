@@ -17,10 +17,13 @@
 
         public static function create($request) {
             $data = [];
-            parse_str($request, $data);
+            // parse_str($request, $data);
+            $data = json_decode($request, true);
+            // print_r($data);
             $title = $data['title'];
             $content = $data['content'];
             $id_signature = $data['course_id'];
+            $description = $data['description'];
 
             $validator = new Validator();
 
@@ -28,7 +31,7 @@
                 'title' => ['required'],
                 'content' => ['required'],
                 'course_id' => ['required'],
-                'course_id' => ['numeric']
+                'description' => ['required']
             ]);
 
             if ($validator->error()) {
@@ -40,7 +43,8 @@
                 $value = Lesson::create([
                     'title' => $title,
                     'content' => $content,
-                    'course_id' => $id_signature
+                    'course_id' => $id_signature,
+                    'description' => $description
                 ]);
     
                 if ($value) {
