@@ -6,6 +6,51 @@
 
     class UserController {
 
+        public static function login($request) {
+           
+            
+            $data = [];
+            parse_str($request, $data);
+            // print_r($data);
+            
+          
+            $email = $data['email'];
+            $pwd = $data['pwd'];
+
+            $validator = new Validator();
+
+            $validator->validate($data, [
+              
+                'email' => ['required'],
+                'pwd' => ['required']
+            ]);
+
+            if ($validator->error()) {
+                return json_encode([
+                    'status' => 'error',
+                    'errors' => $validator->error()
+                ]);
+            } else {
+                $login=User::login([
+                    'email' => $email,
+                    'pwd' => $pwd
+                ]);
+                if ($login) {
+                    return json_encode([
+                        'status' => 'ok',
+                        'data' => $login
+                    ]);
+                } else {
+                    return json_encode([
+                        'status' => 'error',
+                        'message' => 'No se encontro el usuario'
+                    ]);
+                }
+                
+                return "Error";
+            }
+        }
+
         public static function create($request) {
             
             $data = [];

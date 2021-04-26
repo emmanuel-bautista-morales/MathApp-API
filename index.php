@@ -5,7 +5,7 @@
     header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
     header("Allow: GET, POST, OPTIONS, PUT, DELETE");
     // json
-    // header("Content-type: application/json; charset= utf8");
+     header("Content-type: application/json; charset= utf8");
     require 'vendor/autoload.php';
     
     use Database\DB;
