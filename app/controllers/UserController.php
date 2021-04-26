@@ -49,5 +49,53 @@
                 return "Error";
             }
         }
+
+        public static function add_score($request) {
+            
+            $data = [];
+            parse_str($request, $data);
+            // print_r($data);
+            
+            $user_id = $data['user_id'];
+            $test_id = $data['test_id'];
+            $score   = $data['score'];
+
+          
+    
+            $validator = new Validator();
+    
+            $validator->validate($data, [
+                'user_id' => ['required'],
+                'test_id' => ['required'],
+                'score'   => ['score']
+              
+            ]);
+    
+            if ($validator->error()) {
+                return json_encode([
+                    'status' => 'error',
+                    'errors' => $validator->error()
+                ]);
+            } else {
+                if (User::add_score([
+                    'user_id' => $user_id,
+                    'test_id' => $test_id,
+                    'score'   => $score
+                    
+                ])) {
+                    return json_encode([
+                        'status' => 'ok',
+                        'message' => 'Calificación del test registrado'
+                    ]);
+                } else {
+                    return json_encode([
+                        'status' => 'error',
+                        'message' => 'Ocurrió un error registrar la calificacion del test'
+                    ]);
+                }
+                
+                return "Error";
+            }
+        }
     }
 ?>
