@@ -1,9 +1,10 @@
 <?php
-    namespace Controllers;  
-    use Lib\Validator;
-    use Models\Test;
+    namespace Controllers;
 
-class TestController {
+    use Lib\Validator;
+    use Models\Answer;
+
+    class AnswerController {
         public static function create($request) {
             $data = [];
             $data = json_decode($request, true);
@@ -11,9 +12,8 @@ class TestController {
             $validator = new Validator();
 
             $validator->validate($data, [
-                'instructions' => ['required'],
-                'type_test_id' => ['required', 'numeric'],
-                'course_id' => ['required', 'numeric']
+                'answer' => ['required'],
+                // 'correct' => ['required'],
             ]);
 
             if ($validator->error()) {
@@ -22,20 +22,19 @@ class TestController {
                     'errors' => $validator->error()
                 ]);
             } else {
-                $value = Test::create($data);
-
+                $value = Answer::create($data);
                 if ($value) {
                     return json_encode([
                         'status' => 'ok',
-                        'message' => 'Test creado correctamente'
+                        'message' => 'Respuesta creado correctamente'
                     ]);
                 } else {
                     return json_encode([
                         'status' => 'error',
-                        'message' => 'Hubo un error al crear el test'
+                        'message' => 'Hubo un error al crear la respuesta'
                     ]);
                 }
             }
         }
-     }
+    }
 ?>

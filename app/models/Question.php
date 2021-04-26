@@ -1,19 +1,18 @@
-<?php   
+<?php
     namespace Models;
-
     use Database\DB;
 
-    class Test {    
+    class Question {
         public static function create($attributes=[]) {
             if (sizeof($attributes) > 0) {
                 $db = DB::get_database();
-                $smt = $db->prepare("INSERT INTO tests (instructions, type_test_id, course_id) VALUES (:instructions, :type_test_id, :course_id)");
+                $smt = $db->prepare("INSERT INTO questions (question, test_id) VALUES (:question, :test_id)");
 
                 if ($smt->execute(array(
-                    ':instructions' => $attributes['instructions'],
-                    ':type_test_id' => $attributes['type_test_id'],
-                    ':course_id' => $attributes['course_id']
+                    ':question' => $attributes['question'],
+                    ':test_id' => $attributes['test_id'],
                 ))) {
+                   
                     return true;
                 } else {
                     return false;

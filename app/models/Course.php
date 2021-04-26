@@ -19,7 +19,7 @@
                    $courses[$i]=$row;
                    $i++;
                }
-
+               
                foreach ($courses as $course) {
                    // obtiene las lecciones del curso
                     $course['lessons'] = self::select_all_where('lessons', 'course_id', $course['id']);

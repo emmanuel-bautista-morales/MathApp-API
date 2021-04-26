@@ -1,5 +1,7 @@
 <?php
-    use Controllers\CourseController;
+
+use Controllers\AnswerController;
+use Controllers\CourseController;
     use Phroute\Phroute\RouteCollector;
     use Phroute\Phroute\Dispatcher;
     use Phroute\Phroute\Exception\HttpRouteNotFoundException;
@@ -9,6 +11,8 @@
     use Controllers\LessonController;
     use Controllers\ExperimentController;
     use Controllers\ProgressController;
+    use Controllers\TestController;
+    use Controllers\QuestionController;
 
 
     $collector = new RouteCollector();
@@ -25,7 +29,7 @@
     $collector->post('/api/course/create', fn() => CourseController::create(file_get_contents("php://input", true)));
     $collector->get("/api/course/show/{id}",fn($id)=>CourseController::show($id));
     $collector->delete('/api/course/delete/{id}', fn($id)=>CourseController::delete($id));
-    $collector->get('/api/course/{id}/lessons', fn($id)=>CourseController::get_lessons($id));
+    // $collector->get('/api/course/{id}/lessons', fn($id)=>CourseController::get_lessons($id));
     // lessons
     $collector->get('/api/lesson/all/{id}', fn($id) => LessonController::all($id));
     $collector->post('/api/lesson/create', fn() => LessonController::create(file_get_contents("php://input", true)));
@@ -37,6 +41,14 @@
     $collector->get("/api/experiment/show/{id}",fn($id)=>ExperimentController::show($id));
     $collector->delete('/api/experiment/delete/{id}', fn($id)=>ExperimentController::delete($id));
 
+    // test
+    $collector->post('/api/test/create', fn() => TestController::create(file_get_contents("php://input", true)));
+
+    // questions
+    $collector->post('/api/question/create', fn() => QuestionController::create(file_get_contents("php://input", true)));
+
+    // answers
+    $collector->post('/api/answer/create', fn() => AnswerController::create(file_get_contents("php://input", true)));
 
     //progress
     $collector->post('/api/progress/create', fn() => ProgressController::create(file_get_contents("php://input", true)));

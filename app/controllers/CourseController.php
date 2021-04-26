@@ -83,21 +83,21 @@ use Models\Course;
             }
         }
 
-        public static function get_lessons($course_id) {
-            $lessons = Course::get_lessons($course_id);
+        // public static function get_lessons($course_id) {
+        //     $lessons = Course::get_lessons($course_id);
 
-            if ($lessons) {
-                return json_encode([
-                    'status' => 'ok',
-                    'data' => $lessons
-                ]);
-            } else {
-                return json_encode([
-                    'status' => 'error',
-                    'message' => 'No se econtraron lecciones para ese curso'
-                ]);
-            }
-        }
+        //     if ($lessons) {
+        //         return json_encode([
+        //             'status' => 'ok',
+        //             'data' => $lessons
+        //         ]);
+        //     } else {
+        //         return json_encode([
+        //             'status' => 'error',
+        //             'message' => 'No se econtraron lecciones para ese curso'
+        //         ]);
+        //     }
+        // }
 
         
     }
