@@ -10,8 +10,8 @@
         public static function connect(){
             try {
                 self::$dsn = "mysql:host=localhost;dbname=mathapp";
-                 self::$dbh = new PDO(self::$dsn, "admin", "abcdef12345.");
-               // self::$dbh = new PDO(self::$dsn, "root", "4573666141");
+                //  self::$dbh = new PDO(self::$dsn, "admin", "abcdef12345.");
+               self::$dbh = new PDO(self::$dsn, "root", "4573666141");
                 self::$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 echo $e->getMessage();

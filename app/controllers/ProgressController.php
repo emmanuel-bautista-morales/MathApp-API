@@ -7,9 +7,7 @@ use Models\Progress;
 class ProgressController{
     public static function create($request) {
             
-        $data = [];
-        parse_str($request, $data);
-        // print_r($data);
+        $data = json_decode($request, true);
         
         $user_id = $data['user_id'];
         $lesson_id = $data['lesson_id'];

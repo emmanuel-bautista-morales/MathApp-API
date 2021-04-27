@@ -7,12 +7,7 @@
     class UserController {
 
         public static function login($request) {
-           
-            
-            $data = [];
-            parse_str($request, $data);
-            // print_r($data);
-            
+            $data = json_decode($request, true);
           
             $email = $data['email'];
             $pwd = $data['pwd'];
@@ -52,10 +47,7 @@
         }
 
         public static function create($request) {
-            
-            $data = [];
-            parse_str($request, $data);
-            // print_r($data);
+            $data = json_decode($request, true);
             
             $username = $data['username'];
             $email = $data['email'];

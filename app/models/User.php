@@ -21,8 +21,8 @@ use PDO;
                        $arrayList= $user['user']=$row; 
                     } 
                     $arrayList['answered_tests']=self::get_answered_tests($user['user']['id']);
-                        
-                        return $arrayList; 
+                    $arrayList['last_lesson']=self::select_all_where('user_progress', 'user_id', $user['user']['id'])[0]['lesson_id'];
+                    return $arrayList; 
                 }else{
                     return false;
                 }
@@ -30,6 +30,7 @@ use PDO;
                 return false;
             }
         }
+
         public static function create($attributes = []) {
             if (sizeof($attributes) > 0) {
                 // almacenar instancia de base de datos
@@ -73,6 +74,24 @@ use PDO;
             $db = DB::get_database();
             $stmt = $db->prepare("select users_tests.test_id from users_tests inner join users on users_tests.user_id= users.id where users.id=:user_id");
             $stmt->execute([":user_id" => $user_id]);
+    
+            if ($stmt->rowCount() > 0) {
+                $array = [];//array para almacenar los datos
+                $i = 0;
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    $array[$i]=$row;
+                    $i++; 
+                }
+                return $array;
+            } else {
+                return [];
+            }
+        }
+
+        private static function select_all_where($table, $field_name, $value) {
+            $db = DB::get_database();
+            $stmt = $db->prepare("select * from $table where $field_name= :$field_name");
+            $stmt->execute([":$field_name" => $value]);
     
             if ($stmt->rowCount() > 0) {
                 $array = [];//array para almacenar los datos
