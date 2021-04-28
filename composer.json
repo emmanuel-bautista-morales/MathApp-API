@@ -2,7 +2,8 @@
     "name": "emmanuel/api",
     "require": {
         "phroute/phroute": "^2.1",
-        "firebase/php-jwt": "^5.2"
+        "firebase/php-jwt": "^5.2",
+        "twig/twig": "^3.0"
     },
     "authors": [
         {

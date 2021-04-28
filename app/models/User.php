@@ -21,7 +21,7 @@ use PDO;
                        $arrayList= $user['user']=$row; 
                     } 
                     $arrayList['answered_tests']=self::get_answered_tests($user['user']['id']);
-                    $arrayList['last_lesson']=self::select_all_where('user_progress', 'user_id', $user['user']['id'])[0]['lesson_id'];
+                    $arrayList['last_lesson']=sizeof(self::select_all_where('user_progress', 'user_id', $user['user']['id'])) > 0 ? self::select_all_where('user_progress', 'user_id', $user['user']['id'])[0]['lesson_id'] : 0;
                     return $arrayList; 
                 }else{
                     return false;

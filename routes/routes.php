@@ -20,7 +20,9 @@ use Controllers\CourseController;
     // rutas
 
     // users
-    $collector->get('/', fn() => HomeController::index() );
+    $collector->get('/', function() {
+        return view('home/index', ['name' => 'bicho']);
+    });
     $collector->post('/api/user/create', fn() => UserController::create(file_get_contents("php://input", true)));
     $collector->post('/api/user/add_score', fn() => UserController::add_score(file_get_contents("php://input", true)));
     $collector->post('/api/user/login', fn() => UserController::login(file_get_contents("php://input", true)));
