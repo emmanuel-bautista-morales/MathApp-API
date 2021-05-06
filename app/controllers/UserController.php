@@ -21,7 +21,7 @@
             ]);
 
             if ($validator->error()) {
-                return json_encode([
+                return json([
                     'status' => 'error',
                     'errors' => $validator->error()
                 ]);
@@ -31,12 +31,12 @@
                     'pwd' => $pwd
                 ]);
                 if ($login) {
-                    return json_encode([
+                    return json([
                         'status' => 'ok',
                         'data' => $login
                     ]);
                 } else {
-                    return json_encode([
+                    return json([
                         'status' => 'error',
                         'message' => 'No se encontro el usuario'
                     ]);

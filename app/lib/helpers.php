@@ -10,5 +10,5 @@
     function json($array) {
         header("Content-type: application/json; charset= utf8");
         return json_encode($array);
-    }
+    }   
 ?>

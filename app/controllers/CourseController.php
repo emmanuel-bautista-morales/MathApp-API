@@ -9,7 +9,7 @@ use Models\Course;
         public static function all() {
             $courses = Course::all();
 
-            return json_encode([
+            return json([
                 'status' => 'ok',
                 'data' => $courses
             ]);
@@ -27,7 +27,7 @@ use Models\Course;
             ]);
 
             if ($validator->error()) {
-                return json_encode([
+                return json([
                     'status' => 'error',
                     'errors' => $validator->error()
                 ]);
@@ -37,12 +37,12 @@ use Models\Course;
                 ]);
     
                 if ($value) {
-                    return json_encode([
+                    return json([
                         'status' => 'ok',
                         'message' => 'Curso creado correctamente'
                     ]);
                 } else {
-                    return json_encode([
+                    return json([
                         'status' => 'error',
                         'message' => 'Ocurrió un error al crear el curso'
                     ]);
@@ -55,12 +55,12 @@ use Models\Course;
             $experiment = Course::show($id);
     
             if ($experiment) {
-                return json_encode([
+                return json([
                     'status' => 'ok',
                     'data' => $experiment
                 ]);
             } else {
-                return json_encode([
+                return json([
                     'status' => 'error',
                     'message' => 'No se encontró ningún curso con ese id'
                 ]);
@@ -71,12 +71,12 @@ use Models\Course;
             $value = Course::delete($id);
     
             if ($value) {
-                return json_encode([
+                return json([
                     'status' => 'ok',
                     'message' => 'Curso eliminado'
                 ]);
             } else {
-                return json_encode([
+                return json([
                     'status' => 'error',
                     'message' => 'Ocurrió un error al eliminar el curso'
                 ]);
@@ -87,12 +87,12 @@ use Models\Course;
         //     $lessons = Course::get_lessons($course_id);
 
         //     if ($lessons) {
-        //         return json_encode([
+        //         return json([
         //             'status' => 'ok',
         //             'data' => $lessons
         //         ]);
         //     } else {
-        //         return json_encode([
+        //         return json([
         //             'status' => 'error',
         //             'message' => 'No se econtraron lecciones para ese curso'
         //         ]);
